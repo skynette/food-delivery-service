@@ -9,11 +9,17 @@ class Restaurant(models.Model):
 	password = models.CharField(max_length=255)
 	location = models.CharField(max_length=255)
 
+	def __str__(self):
+		return self.name
+
 class MenuItem(models.Model):
 	restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
 	name = models.CharField(max_length=255)
 	description = models.TextField()
 	price = models.IntegerField()
+
+	def __str__(self):
+		return f"{self.name} at {self.restaurant}"
 
 class Orders(models.Model):
 	customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
@@ -22,15 +28,16 @@ class Orders(models.Model):
 	delivery_address = models.CharField(max_length=255)
 	total_price = models.IntegerField()
 
+	def __str__(self):
+		return f"Order #{self.pk} for {self.customer} at {self.restaurant}"
+
 class OrderItems(models.Model):
 	order = models.ForeignKey(Orders, on_delete=models.CASCADE)
 	menu_item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
 	quantity = models.IntegerField()
 
-class Payments(models.Model):
-	order = models.ForeignKey(Orders, on_delete=models.CASCADE)
-	amount = models.IntegerField()
-	payment_method = models.CharField(max_length=255, choices=[("cash", "Cash"), ("card", "Card"), ("mobile money", "Mobile Money")])
+	def __str__(self):
+		return f"{self.quantity} of {self.menu_item} for Order #{self.order.pk}"
 
 class Review(models.Model):
 	customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
@@ -38,6 +45,9 @@ class Review(models.Model):
 	rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
 	review = models.TextField()
 	date = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return f"{self.customer}'s review of {self.restaurant}"
 
 	class Meta:
 		unique_together = [('customer_id', 'restaurant_id')]
