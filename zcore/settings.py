@@ -46,6 +46,10 @@ INSTALLED_APPS = [
     'drf_yasg',
     'corsheaders',
     'authentication',
+    'payments',
+    'restaurant',
+    'users',
+    
 ]
 
 MIDDLEWARE = [

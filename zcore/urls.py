@@ -18,7 +18,6 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from . import views
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -39,9 +38,10 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("api/", views.home, name="home"),
-    path("api/user/", views.get_user_details, name="get_user_details"),
     path("api/auth/", include("authentication.urls")),
+    path("api/payments/", include('payments.urls')),
+    path("api/restaurant/", include('restaurant.urls')),
+    path("api/user/", include('users.urls')),
 
     # docs
     path('swagger(<format>\.json|\.yaml)/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
