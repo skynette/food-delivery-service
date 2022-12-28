@@ -2,6 +2,12 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from users.models import Customer
 
+ORDER_CHOICES = [
+	("pending", "Pending"), 
+	("in progress", "In Progress"), 
+	("completed", "Completed")
+]
+
 class Restaurant(models.Model):
 	name = models.CharField(max_length=255)
 	email = models.EmailField()
@@ -24,7 +30,7 @@ class MenuItem(models.Model):
 class Orders(models.Model):
 	customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 	restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-	status = models.CharField(max_length=255, choices=[("pending", "Pending"), ("in progress", "In Progress"), ("completed", "Completed")])
+	status = models.CharField(max_length=255, choices=ORDER_CHOICES)
 	delivery_address = models.CharField(max_length=255)
 	total_price = models.IntegerField()
 
