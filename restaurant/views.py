@@ -3,10 +3,15 @@ from rest_framework.permissions import IsAuthenticated
 from restaurant.permissions import IsOwner
 from .serializers import MenuItemSerializer, OrdersSerializer, OrderItemsSerializer, RestaurantSerializer
 from .models import MenuItem, Orders, OrderItems, Restaurant
+from rest_framework.filters import DjangoFilterBackend, OrderingFilter, SearchFilter
 
 class RestaurantListView(generics.ListAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
+    filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
+    filterset_fields = ["name", "location"]
+    ordering_fields = ["name", "location"]
+    search_fields = ["name", "location"]
 
 
 class RestaurantDetailView(generics.RetrieveUpdateAPIView):
