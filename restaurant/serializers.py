@@ -2,9 +2,21 @@ from rest_framework import serializers
 from .models import Restaurant, MenuItem, Orders, OrderItems, Review
 
 class RestaurantSerializer(serializers.ModelSerializer):
+    rating = serializers.SerializerMethodField()
+
     class Meta:
         model = Restaurant
-        fields = ['id', 'name', 'email', 'phone', 'password', 'location']
+        fields = ['id', 'name', 'email', 'phone', 'delivery_fee', 'average_delivery_time', 'minimum_order_value', 'location', 'rating']
+
+    def get_rating(self, obj):
+        # Get all the reviews for this restaurant
+        reviews = Review.objects.filter(restaurant=obj)
+        # Calculate the average rating
+        if reviews.count() > 0:
+            rating = sum([r.rating for r in reviews]) / reviews.count()
+        else:
+            rating = 0
+        return rating
 
 class MenuItemSerializer(serializers.ModelSerializer):
     class Meta:

@@ -12,7 +12,9 @@ class Restaurant(models.Model):
 	name = models.CharField(max_length=255)
 	email = models.EmailField()
 	phone = models.CharField(max_length=255)
-	password = models.CharField(max_length=255)
+	delivery_fee = models.IntegerField()
+	average_delivery_time = models.FloatField()
+	minimum_order_value = models.IntegerField()
 	location = models.CharField(max_length=255)
 
 	def __str__(self):

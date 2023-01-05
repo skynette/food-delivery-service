@@ -54,9 +54,16 @@ class OrderDetailView(generics.RetrieveAPIView):
 
 # make sure only owner of restaurant is allowed to
 # create a menu item
-class MenuListView(generics.ListCreateAPIView):
-    queryset = MenuItem.objects.all()
+class MenuListView(generics.RetrieveAPIView):
+    """
+    Gets the menu items for a given restaurant
+    """
     serializer_class = MenuItemSerializer
+
+    def get_queryset(self):
+        restaurant = self.kwargs['restaurant_pk']
+        return MenuItem.objects.filter(restaurant=restaurant)
+
 
 # make sure only owner of restaurant is allowed to
 # edit a menu item
