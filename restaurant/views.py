@@ -4,6 +4,7 @@ from restaurant.permissions import IsOwner
 from .serializers import MenuItemSerializer, OrdersSerializer, OrderItemsSerializer, RestaurantSerializer
 from .models import MenuItem, Orders, OrderItems, Restaurant
 from rest_framework.filters import OrderingFilter, SearchFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 class RestaurantListView(generics.ListAPIView):
     queryset = Restaurant.objects.all()

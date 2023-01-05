@@ -209,3 +209,6 @@ CORS_ALLOW_CREDENTIALS = True
 
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
