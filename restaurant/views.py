@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from restaurant.permissions import IsOwner
 from .serializers import MenuItemSerializer, OrdersSerializer, OrderItemsSerializer, RestaurantSerializer
 from .models import MenuItem, Orders, OrderItems, Restaurant
-from rest_framework.filters import DjangoFilterBackend, OrderingFilter, SearchFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
 
 class RestaurantListView(generics.ListAPIView):
     queryset = Restaurant.objects.all()

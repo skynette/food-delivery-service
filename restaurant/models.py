@@ -8,6 +8,11 @@ ORDER_CHOICES = [
 	("completed", "Completed")
 ]
 
+RESTAURANT_STATUS_CHOICES = [
+	('Open', 'Open'),
+	('Closed', 'Closed')
+]
+
 class Restaurant(models.Model):
 	name = models.CharField(max_length=255)
 	email = models.EmailField()
@@ -16,6 +21,9 @@ class Restaurant(models.Model):
 	average_delivery_time = models.FloatField()
 	minimum_order_value = models.IntegerField()
 	location = models.CharField(max_length=255)
+	opening_time = models.TimeField()
+	closing_time = models.TimeField()
+	status = models.CharField(max_length=255, choices=RESTAURANT_STATUS_CHOICES, default="Open")
 
 	def __str__(self):
 		return self.name
@@ -59,3 +67,4 @@ class Review(models.Model):
 
 	class Meta:
 		unique_together = [('customer_id', 'restaurant_id')]
+		
