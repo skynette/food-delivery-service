@@ -13,6 +13,12 @@ RESTAURANT_STATUS_CHOICES = [
 	('Closed', 'Closed')
 ]
 
+class Category(models.Model):
+	name = models.CharField(max_length=255)
+
+	def __str__(self):
+		return self.name
+
 class Restaurant(models.Model):
 	name = models.CharField(max_length=255)
 	email = models.EmailField()
@@ -20,13 +26,17 @@ class Restaurant(models.Model):
 	delivery_fee = models.IntegerField()
 	average_delivery_time = models.FloatField()
 	minimum_order_value = models.IntegerField()
-	location = models.CharField(max_length=255)
+	delivery_hours = models.JSONField(default=None)
+	card_payments = models.BooleanField(default=False)
+	cash_on_delivery = models.BooleanField(default=True)
+	address = models.TextField()
 	opening_time = models.TimeField()
 	closing_time = models.TimeField()
 	status = models.CharField(max_length=255, choices=RESTAURANT_STATUS_CHOICES, default="Open")
 
 	def __str__(self):
 		return self.name
+
 
 class MenuItem(models.Model):
 	restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
