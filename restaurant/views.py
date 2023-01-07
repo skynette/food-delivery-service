@@ -5,6 +5,10 @@ from .serializers import MenuItemSerializer, OrdersSerializer, OrderItemsSeriali
 from .models import MenuItem, Orders, OrderItems, Restaurant
 from rest_framework.filters import OrderingFilter, SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, permissions
+from django.core.exceptions import PermissionDenied
+
 
 class RestaurantListView(generics.ListAPIView):
     queryset = Restaurant.objects.all()
@@ -58,9 +62,21 @@ class OrderDetailView(generics.RetrieveAPIView):
     lookup_field = 'pk'
 
 
+class MenuItemCreateView(generics.CreateAPIView):
+    serializer_class = MenuItemSerializer
+    permission_classes = [permissions.IsAuthenticated, IsOwner]
+
+    def perform_create(self, serializer):
+        restaurant = get_object_or_404(Restaurant, pk=self.kwargs.get('pk'))
+        if self.request.user == restaurant.owner:
+            serializer.save(restaurant=restaurant)
+        else:
+            raise PermissionDenied
+
+
 # make sure only owner of restaurant is allowed to
 # create a menu item
-class MenuListView(generics.RetrieveAPIView):
+class MenuItemListView(generics.RetrieveAPIView):
     """
     Gets the menu items for a given restaurant
     """
@@ -73,7 +89,7 @@ class MenuListView(generics.RetrieveAPIView):
 
 # make sure only owner of restaurant is allowed to
 # edit a menu item
-class MenuDetailView(generics.RetrieveUpdateDestroyAPIView):
+class MenuItemDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MenuItem.objects.all()
     serializer_class = MenuItemSerializer
 

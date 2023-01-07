@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from users.models import Customer
+from django.contrib.auth import get_user_model
 
 ORDER_CHOICES = [
 	("pending", "Pending"), 
@@ -20,6 +21,7 @@ class Category(models.Model):
 		return self.name
 
 class Restaurant(models.Model):
+	owner = models.ForeignKey(get_user_model, on_delete=models.SET_NULL, null=True)
 	name = models.CharField(max_length=255)
 	email = models.EmailField()
 	phone = models.CharField(max_length=255)
