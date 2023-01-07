@@ -54,6 +54,7 @@ class Orders(models.Model):
 	restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
 	status = models.CharField(max_length=255, choices=ORDER_CHOICES)
 	delivery_address = models.CharField(max_length=255)
+	delivery_instruction = models.CharField(max_length=255)
 	total_price = models.IntegerField()
 
 	def __str__(self):
