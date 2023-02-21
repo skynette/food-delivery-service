@@ -9,5 +9,6 @@ urlpatterns = [
 	path('token/', views.login_view, name='login_view'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 	path('token/blacklist/', TokenBlacklistView.as_view(), name='token_blacklist'),
-     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api/change-password/', views.ChangePasswordView.as_view(), name='change-password'),
+    path('api/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
 ]
