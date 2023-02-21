@@ -30,7 +30,7 @@ class Restaurant(models.Model):
 	delivery_fee = models.IntegerField(null=True)
 	average_delivery_time = models.FloatField(null=True)
 	minimum_order_value = models.IntegerField(null=True)
-	#delivery_hours = models.JSONField(default=None)
+	delivery_hours = models.JSONField(null=True)
 	card_payments = models.BooleanField(default=False)
 	cash_on_delivery = models.BooleanField(default=True)
 	address = models.TextField(null=True)
