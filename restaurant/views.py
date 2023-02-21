@@ -15,9 +15,9 @@ class RestaurantListView(generics.ListAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
-    filterset_fields = ["name"]
-    ordering_fields = ["name"]
-    search_fields = ["name"]
+    filterset_fields = ["name","location"]
+    ordering_fields = ["name","location"]
+    search_fields = ["name","location"]
 
 
 class RestaurantDetailView(generics.RetrieveUpdateAPIView):

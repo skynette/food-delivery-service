@@ -24,6 +24,7 @@ class Restaurant(models.Model):
 	User = get_user_model()
 	owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 	name = models.CharField(max_length=255)
+	location = models.CharField(max_length=255, null=True)
 	email = models.EmailField()
 	phone = models.CharField(max_length=255)
 	delivery_fee = models.IntegerField(null=True)
