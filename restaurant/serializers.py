@@ -6,7 +6,8 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Restaurant
-        fields = ['id', 'name', 'email', 'phone', 'delivery_fee', 'average_delivery_time', 'minimum_order_value', 'location', 'rating']
+        # fields = ['id', 'name', 'email', 'phone', 'delivery_fee', 'average_delivery_time', 'minimum_order_value', 'location', 'rating']
+        fields = ['id', 'name', 'email', 'phone', 'delivery_fee', 'average_delivery_time', 'minimum_order_value', 'rating']
 
     def get_rating(self, obj):
         # Get all the reviews for this restaurant

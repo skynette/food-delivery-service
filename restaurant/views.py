@@ -8,15 +8,16 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions
 from django.core.exceptions import PermissionDenied
+from django.contrib.auth import get_user_model
 
 
 class RestaurantListView(generics.ListAPIView):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
-    filterset_fields = ["name", "location"]
-    ordering_fields = ["name", "location"]
-    search_fields = ["name", "location"]
+    filterset_fields = ["name"]
+    ordering_fields = ["name"]
+    search_fields = ["name"]
 
 
 class RestaurantDetailView(generics.RetrieveUpdateAPIView):
@@ -24,6 +25,11 @@ class RestaurantDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = RestaurantSerializer
     lookup_field = 'pk'
 
+#restaurant creation
+class RestaurantCreateView(generics.CreateAPIView):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantSerializer
+ 
 
 class OrderListAPIView(generics.ListAPIView):
     permission_classes = [IsAuthenticated, IsOwner]
@@ -36,7 +42,7 @@ class OrderListAPIView(generics.ListAPIView):
 class CreateOrderView(generics.CreateAPIView):
     queryset = Orders.objects.all()
     serializer_class = OrdersSerializer
-
+    
     def perform_create(self, serializer):
         serializer.save(customer=self.request.user)
 
