@@ -21,19 +21,21 @@ class Category(models.Model):
 		return self.name
 
 class Restaurant(models.Model):
-	owner = models.ForeignKey(get_user_model, on_delete=models.SET_NULL, null=True)
+	User = get_user_model()
+	owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 	name = models.CharField(max_length=255)
+	location = models.CharField(max_length=255, null=True)
 	email = models.EmailField()
 	phone = models.CharField(max_length=255)
-	delivery_fee = models.IntegerField()
-	average_delivery_time = models.FloatField()
-	minimum_order_value = models.IntegerField()
-	delivery_hours = models.JSONField(default=None)
+	delivery_fee = models.IntegerField(null=True)
+	average_delivery_time = models.FloatField(null=True)
+	minimum_order_value = models.IntegerField(null=True)
+	delivery_hours = models.JSONField(null=True)
 	card_payments = models.BooleanField(default=False)
 	cash_on_delivery = models.BooleanField(default=True)
-	address = models.TextField()
-	opening_time = models.TimeField()
-	closing_time = models.TimeField()
+	address = models.TextField(null=True)
+	opening_time = models.TimeField(default='09:00')
+	closing_time = models.TimeField(default='20:00')
 	status = models.CharField(max_length=255, choices=RESTAURANT_STATUS_CHOICES, default="Open")
 
 	def __str__(self):
@@ -54,8 +56,8 @@ class Orders(models.Model):
 	restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
 	status = models.CharField(max_length=255, choices=ORDER_CHOICES)
 	delivery_address = models.CharField(max_length=255)
-	delivery_instruction = models.CharField(max_length=255)
-	total_price = models.IntegerField()
+	delivery_instruction = models.CharField(max_length=255, null=True)
+	total_price = models.IntegerField(null=True)
 
 	def __str__(self):
 		return f"Order #{self.pk} for {self.customer} at {self.restaurant}"

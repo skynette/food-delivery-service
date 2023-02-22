@@ -31,3 +31,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
         if User.objects.filter(username=username).exists():
             raise serializers.ValidationError({"Username": "Username taken"})
         return super().validate(args)
+    
+#Change Password/reset
+class ChangePasswordSerializer(serializers.Serializer):
+    model = User
+
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
