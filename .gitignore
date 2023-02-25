@@ -8,6 +8,8 @@ __pycache__/
 
 #vscode
 .vscode
+.vscode/
+.vscode/*
 !.vscode/launch.json
 
 # Distribution / packaging
