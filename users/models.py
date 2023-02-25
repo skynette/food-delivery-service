@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from .managers import CustomUserManager
+from django.contrib.auth.base_user import BaseUserManager
 import uuid
 
 class User(AbstractUser):
@@ -26,9 +27,10 @@ class User(AbstractUser):
 	class Meta:
 		verbose_name = _('User')
 		verbose_name_plural = _('Users')
+		ordering = ('first_name',)
 
 	def __str__(self):
-		return f"{self.username}"
+		return f"{self.get_full_name()} ({self.email})"
 
 	@property
 	def get_full_name(self) -> str:
@@ -47,10 +49,25 @@ class User(AbstractUser):
 implement proxy models for 4 user types
 """
 
+class CustomerManager(BaseUserManager):
+	def get_queryset(self, *args, **kwargs):
+		res = super().get_queryset(*args, **kwargs)
+		return res.filter(role=User.Role.CUSTOMER)
+	
+class OwnerManager(BaseUserManager):
+	def get_queryset(self, *args, **kwargs):
+		res = super().get_queryset(*args, **kwargs)
+		return res.filter(role=User.Role.OWNER)
+	
+class StaffManager(BaseUserManager):
+	def get_queryset(self, *args, **kwargs):
+		res = super().get_queryset(*args, **kwargs)
+		return res.filter(role=User.Role.STAFF)
 
 class Customer(User):
 	base_role = User.Role.CUSTOMER
 		
+	customers = CustomerManager()
 	class Meta:
 		proxy = True
 		ordering = ('first_name',)
@@ -61,7 +78,8 @@ class Customer(User):
 
 class Owner(User):
 	base_role = User.Role.OWNER
-		
+	
+	owners = OwnerManager()
 	class Meta:
 		proxy = True
 		ordering = ('first_name',)
@@ -72,6 +90,8 @@ class Owner(User):
 
 class Staff(User):
 	base_role = User.Role.STAFF
+
+	staffs = StaffManager()
 		
 	class Meta:
 		proxy = True
