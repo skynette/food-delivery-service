@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 
 
 class RegistrationAPIView(generics.GenericAPIView):
-	serializer_class = RegistrationSerializer
+	# serializer_class = RegistrationSerializer
 
 	def post(self, request):
 		serializer = self.get_serializer(data=request.data)
